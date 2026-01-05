@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
 from backend import config
@@ -76,16 +76,11 @@ def login():
     session['user_id'] = user['id']
     session['role'] = user['role']
 
-    return jsonify({
-    "message": "Login successful",
-    "role": user['role']
-    }), 200
+    return redirect("/dashboard")
 
 
 @auth_bp.route('/logout', methods=['POST'])
 def logout():
     session.clear()
-    return jsonify({
-        "message": "Logged out successfully"
-    }), 200
+    return redirect("/")
 
