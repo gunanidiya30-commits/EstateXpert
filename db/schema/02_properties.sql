@@ -1,14 +1,25 @@
 CREATE TABLE properties (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    owner_id INT NOT NULL,
+
     title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+
     price DECIMAL(12,2) NOT NULL,
-    city VARCHAR(100) NOT NULL,
-    area INT NOT NULL,
-    type VARCHAR(50) NOT NULL,
+    area_sqft INT NOT NULL,
     bhk INT NOT NULL,
-    description TEXT,
+
+    property_type ENUM('residential', 'commercial', 'rental') NOT NULL,
+
+    city VARCHAR(100) NOT NULL,
+    locality VARCHAR(100) NOT NULL,
+
+    latitude DECIMAL(10,8),
+    longitude DECIMAL(11,8),
+
+    owner_id INT NOT NULL,
+
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT fk_properties_owner
         FOREIGN KEY (owner_id)
         REFERENCES users(id)
