@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, session, redirect
+from flask import Blueprint, request, jsonify, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
 from backend import config
@@ -36,11 +36,8 @@ def register():
     cursor.close()
     connection.close()
 
-    return jsonify({
-        "message": "User registered successfully",
-        "email": email,
-        "role": role
-    }), 201
+    return redirect(url_for("pages.login_page"))
+
 
 
 @auth_bp.route('/login', methods=['POST'])

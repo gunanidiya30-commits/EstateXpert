@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Property</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    >
+</head>
+<body class="container mt-4">
+
+<h2>Edit Property</h2>
+
+<!-- UPDATE FORM -->
+<form method="POST"
+      action="/properties/{{ property.id }}/update"
+      enctype="multipart/form-data">
+
+
+    <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input name="title" class="form-control" value="{{ property.title }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea name="description" class="form-control" required>{{ property.description }}</textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Price</label>
+        <input name="price" type="number" class="form-control" value="{{ property.price }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Area (sqft)</label>
+        <input name="area_sqft" type="number" class="form-control" value="{{ property.area_sqft }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">BHK</label>
+        <input name="bhk" type="number" class="form-control" value="{{ property.bhk }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Property Type</label>
+        <select name="property_type" class="form-control" required>
+            <option value="residential" {% if property.property_type == "residential" %}selected{% endif %}>Residential</option>
+            <option value="commercial" {% if property.property_type == "commercial" %}selected{% endif %}>Commercial</option>
+            <option value="rental" {% if property.property_type == "rental" %}selected{% endif %}>Rental</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">City</label>
+        <input name="city" class="form-control" value="{{ property.city }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Locality</label>
+        <input name="locality" class="form-control" value="{{ property.locality }}" required>
+    </div>
+
+    <div class="mb-3">
+    <label class="form-label">Add More Images</label>
+    <input
+        type="file"
+        name="images"
+        class="form-control"
+        multiple
+        accept="image/*"
+    >
+    <small class="text-muted">
+        Uploading images will add to the existing gallery.
+    </small>
+</div>
+
+    <button class="btn btn-primary">Update Property</button>
+</form>
+
+<hr>
+
+<!-- DELETE FORM -->
+<form method="POST"
+      action="/properties/{{ property.id }}/delete"
+      onsubmit="return confirm('Are you sure you want to delete this property?');">
+    <button class="btn btn-danger">Delete Property</button>
+</form>
+
+</body>
+</html>

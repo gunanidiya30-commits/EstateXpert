@@ -1,6 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask
 from backend.routes.auth import auth_bp
 from backend.routes.pages import pages_bp
+from backend.routes.property.routes import property_bp
 
 def create_app():
     app = Flask(__name__)
@@ -10,11 +11,15 @@ def create_app():
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(pages_bp)
+    app.register_blueprint(property_bp)
 
-
-    
     @app.route('/')
     def health_check():
         return "EstateXpert backend running"
 
     return app
+
+
+if __name__ == "__main__":
+    app = create_app()
+    app.run(debug=True)
