@@ -1,81 +1,185 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{{ property.title }}</title>
+    <meta charset="UTF-8">
+    <title>{{ property.title }} | EstateXpert</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
     >
 </head>
-<body class="container mt-4">
 
-<h2>{{ property.title }}</h2>
+<body class="bg-light">
 
-{% if session.get("user_id") %}
-    {% if is_favorite %}
-    <form method="POST" action="/properties/favorites/remove/{{ property.id }}">
-        <button class="btn btn-danger mb-3">
-            💔 Remove from Favorites
-        </button>
-    </form>
-    {% else %}
-    <form method="POST" action="/properties/favorites/add/{{ property.id }}">
-        <button class="btn btn-outline-danger mb-3">
-            ❤️ Add to Favorites
-        </button>
-    </form>
-    {% endif %}
-{% endif %}
-
-
-
-<p><strong>Price:</strong> {{ property.price }}</p>
-<p><strong>Area:</strong> {{ property.area_sqft }} sqft</p>
-<p><strong>BHK:</strong> {{ property.bhk }}</p>
-<p><strong>Type:</strong> {{ property.property_type }}</p>
-<p><strong>City:</strong> {{ property.city }}</p>
-<p><strong>Locality:</strong> {{ property.locality }}</p>
-
-<hr>
-
-{% if images and images|length > 0 %}
-
-<!-- Primary Image -->
-<div class="mb-4">
-    <img
-        src="/{{ images[0].image_path }}"
-        class="img-fluid rounded"
-        alt="Property Image"
-    >
-</div>
-
-<!-- Secondary Images -->
-{% if images|length > 1 %}
-<div class="row">
-    {% for img in images[1:] %}
-    <div class="col-md-3 mb-3">
-        <img
-            src="/{{ img.image_path }}"
-            class="img-fluid rounded"
-            alt="Property Image"
-        >
+<!-- HERO -->
+<section class="bg-dark text-light py-5">
+    <div class="container">
+        <h1 class="fw-bold mb-2">{{ property.title }}</h1>
+        <p class="mb-0 text-light">
+            {{ property.locality }}, {{ property.city }} ·
+            {{ property.property_type }} · {{ property.bhk }} BHK
+        </p>
     </div>
-    {% endfor %}
+</section>
+
+<div class="container my-5">
+
+    <!-- TOP ACTION BAR -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+            <h4 class="fw-semibold mb-1">Property Details</h4>
+            <p class="text-muted mb-0">
+                Review key information, images, and description before shortlisting.
+            </p>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="/dashboard" class="btn btn-outline-secondary">
+                ← Dashboard
+            </a>
+
+            {% if session.get("user_id") %}
+                {% if is_favorite %}
+                <form method="POST" action="/properties/favorites/remove/{{ property.id }}">
+                    <button class="btn btn-danger">💔 Remove from Favorites</button>
+                </form>
+                {% else %}
+                <form method="POST" action="/properties/favorites/add/{{ property.id }}">
+                    <button class="btn btn-outline-danger">❤️ Add to Favorites</button>
+                </form>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row g-5">
+
+        <!-- LEFT COLUMN -->
+        <div class="col-md-5">
+
+            <!-- OVERVIEW -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-3">Overview</h5>
+
+                    <div class="row small">
+                        <div class="col-6 mb-2"><strong>Price:</strong></div>
+                        <div class="col-6 mb-2">{{ property.price }}</div>
+
+                        <div class="col-6 mb-2"><strong>Area:</strong></div>
+                        <div class="col-6 mb-2">{{ property.area_sqft }} sqft</div>
+
+                        <div class="col-6 mb-2"><strong>BHK:</strong></div>
+                        <div class="col-6 mb-2">{{ property.bhk }}</div>
+
+                        <div class="col-6 mb-2"><strong>Type:</strong></div>
+                        <div class="col-6 mb-2">{{ property.property_type }}</div>
+
+                        <div class="col-6 mb-2"><strong>City:</strong></div>
+                        <div class="col-6 mb-2">{{ property.city }}</div>
+
+                        <div class="col-6"><strong>Locality:</strong></div>
+                        <div class="col-6">{{ property.locality }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-3">Description</h5>
+                    <p class="text-muted mb-0">
+                        {{ property.description }}
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="col-md-7">
+
+            <!-- IMAGES -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-3">Property Images</h5>
+
+                    {% if images and images|length > 0 %}
+                        <div class="mb-4">
+                            <img
+                                src="/{{ images[0].image_path }}"
+                                class="img-fluid rounded w-100"
+                            >
+                        </div>
+
+                        {% if images|length > 1 %}
+                        <div class="row g-3">
+                            {% for img in images[1:] %}
+                            <div class="col-md-4">
+                                <img
+                                    src="/{{ img.image_path }}"
+                                    class="img-fluid rounded"
+                                >
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-muted mb-0">
+                            No images available for this property.
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- CONTACT OWNER -->
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-3">Contact Property Owner</h5>
+
+                    {% if session.get("user_id") %}
+                        <form method="POST" action="/properties/{{ property.id }}/contact">
+                            <div class="mb-3">
+                                <label class="form-label">Your Message</label>
+                                <textarea
+                                    name="message"
+                                    class="form-control"
+                                    rows="4"
+                                    required
+                                ></textarea>
+                            </div>
+
+                            <button class="btn btn-success">
+                                Send Inquiry
+                            </button>
+                        </form>
+                    {% else %}
+                        <p class="text-muted mb-2">
+                            Please login to contact the property owner.
+                        </p>
+                        <a href="/login" class="btn btn-outline-primary">
+                            Login to Continue
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- BACK -->
+    <div class="mt-5">
+        <a href="/properties/browse" class="btn btn-outline-secondary">
+            ← Back to Browse Properties
+        </a>
+    </div>
+
 </div>
-{% endif %}
 
-{% else %}
-<p class="text-muted">
-    No images available for this property.
-</p>
-{% endif %}
-
-<p>{{ property.description }}</p>
-
-<a href="/properties/browse" class="btn btn-secondary mt-3">
-    Back to Listings
-</a>
-
+<footer class="text-center py-4 text-muted border-top">
+    © 2026 EstateXpert ·
+    <a href="/contact" class="text-decoration-none">Contact</a>
+</footer>
 
 </body>
 </html>

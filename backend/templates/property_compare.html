@@ -1,76 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Compare Properties</title>
+    <meta charset="UTF-8">
+    <title>Compare Properties | EstateXpert</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
     >
 </head>
-<body class="container mt-4">
-<h2>Compare Properties</h2>
 
-{% if properties and properties|length >= 2 %}
+<body class="bg-light">
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Field</th>
-            {% for p in properties %}
-                <th>{{ p.title }}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Price</td>
-            {% for p in properties %}
-                <td>{{ p.price }}</td>
-            {% endfor %}
-        </tr>
-        <tr>
-            <td>Area (sqft)</td>
-            {% for p in properties %}
-                <td>{{ p.area_sqft }}</td>
-            {% endfor %}
-        </tr>
-        <tr>
-            <td>BHK</td>
-            {% for p in properties %}
-                <td>{{ p.bhk }}</td>
-            {% endfor %}
-        </tr>
-        <tr>
-            <td>Type</td>
-            {% for p in properties %}
-                <td>{{ p.property_type }}</td>
-            {% endfor %}
-        </tr>
-        <tr>
-            <td>City</td>
-            {% for p in properties %}
-                <td>{{ p.city }}</td>
-            {% endfor %}
-        </tr>
-        <tr>
-            <td>Locality</td>
-            {% for p in properties %}
-                <td>{{ p.locality }}</td>
-            {% endfor %}
-        </tr>
-    </tbody>
-</table>
+<!-- HERO HEADER -->
+<section class="bg-dark text-light py-5">
+    <div class="container text-center">
+        <h1 class="fw-bold mb-2">Compare Properties</h1>
+        <p class="mb-0 text-light">
+            Evaluate your shortlisted properties side‑by‑side
+            to make confident decisions.
+        </p>
+    </div>
+</section>
 
-{% else %}
-<p class="text-muted">
-    Select at least two properties to compare.
-</p>
-{% endif %}
+<div class="container my-5">
 
+    <!-- TOP ACTIONS -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <a href="/dashboard" class="btn btn-outline-dark">
+            ← Back to Dashboard
+        </a>
 
-<a href="/properties/browse" class="btn btn-secondary">
-    Back to Listings
-</a>
+        <a href="/properties/favorites" class="btn btn-outline-secondary">
+            Back to Favorites
+        </a>
+    </div>
+
+    {% if properties and properties|length >= 2 %}
+
+    <!-- COMPARISON CARD -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Property</th>
+                            {% for p in properties %}
+                            <th class="text-center fw-semibold">
+                                {{ p.title }}
+                            </th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <th>Price</th>
+                            {% for p in properties %}
+                            <td class="text-center">{{ p.price }}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <th>Area (sqft)</th>
+                            {% for p in properties %}
+                            <td class="text-center">{{ p.area_sqft }}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <th>BHK</th>
+                            {% for p in properties %}
+                            <td class="text-center">{{ p.bhk }}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <th>Property Type</th>
+                            {% for p in properties %}
+                            <td class="text-center">{{ p.property_type }}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <th>City</th>
+                            {% for p in properties %}
+                            <td class="text-center">{{ p.city }}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <th>Locality</th>
+                            {% for p in properties %}
+                            <td class="text-center">{{ p.locality }}</td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <th>Description</th>
+                            {% for p in properties %}
+                            <td class="text-muted small">
+                                {{ p.description }}
+                            </td>
+                            {% endfor %}
+                        </tr>
+
+                        <tr>
+                            <th>View</th>
+                            {% for p in properties %}
+                            <td class="text-center">
+                                <a
+                                    href="/properties/{{ p.id }}"
+                                    class="btn btn-sm btn-primary"
+                                >
+                                    View Details
+                                </a>
+                            </td>
+                            {% endfor %}
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    {% else %}
+
+    <!-- ERROR / EMPTY STATE -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body text-center p-5">
+            <h5 class="fw-semibold mb-2">Not enough properties selected</h5>
+            <p class="text-muted mb-3">
+                Please select at least <strong>2 properties</strong> to compare.
+            </p>
+            <a href="/properties/favorites" class="btn btn-primary">
+                Go Back to Favorites
+            </a>
+        </div>
+    </div>
+
+    {% endif %}
+
+</div>
+
+<!-- FOOTER -->
+<footer class="text-center py-4 text-muted border-top">
+    © 2026 EstateXpert ·
+    <a href="/contact" class="text-decoration-none">Contact Support</a>
+</footer>
 
 </body>
 </html>

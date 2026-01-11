@@ -1,7 +1,7 @@
 # backend/routes/dashboard.py
 
 from flask import Blueprint, render_template, session, redirect, url_for
-from backend.db import get_db
+from backend.utils.db import get_db_connection
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
@@ -10,7 +10,7 @@ def dashboard():
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
 
-    db = get_db()
+    db = get_db_connection()
     cursor = db.cursor(dictionary=True)
 
     user_id = session['user_id']

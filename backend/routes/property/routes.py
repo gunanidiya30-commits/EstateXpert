@@ -238,16 +238,41 @@ def list_properties():
 # -------------------------------------------------
 @property_bp.route("/browse", methods=["GET"])
 def browse_properties():
+    city = request.args.get("city")
+    min_price = request.args.get("min_price")
+    max_price = request.args.get("max_price")
+    bhk = request.args.get("bhk")
+    property_type = request.args.get("property_type")
+
+    query = """
+        SELECT id, title, price, bhk, property_type, city, locality
+        FROM properties WHERE 1=1
+    """
+    params = []
+
+    if city:
+        query += " AND city=%s"
+        params.append(city)
+    if property_type:
+        query += " AND property_type=%s"
+        params.append(property_type)
+    if bhk:
+        query += " AND bhk=%s"
+        params.append(bhk)
+    if min_price:
+        query += " AND price >= %s"
+        params.append(min_price)
+    if max_price:
+        query += " AND price <= %s"
+        params.append(max_price)
+
+    query += " ORDER BY created_at DESC"
+
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-
-    cursor.execute("""
-        SELECT id, title, price, bhk,
-               property_type, city, locality
-        FROM properties ORDER BY created_at DESC
-    """)
-
+    cursor.execute(query, tuple(params))
     properties = cursor.fetchall()
+
     cursor.close()
     conn.close()
 
@@ -410,10 +435,23 @@ def contact_property_owner(property_id):
     return jsonify({"message": "Inquiry sent"}), 201
 
 # -------------------------------------------------
+# COMPARE PROPERTY (FORM HANDLER → REDIRECT)
+# -------------------------------------------------
+@property_bp.route("/compare", methods=["POST"])
+def compare_properties_redirect():
+    compare_ids = request.form.getlist("compare_ids")
+
+    if len(compare_ids) < 2 or len(compare_ids) > 4:
+        return redirect("/properties/favorites")
+
+    ids_param = ",".join(compare_ids)
+    return redirect(f"/properties/compare?ids={ids_param}")
+
+# -------------------------------------------------
 # COMPARE PROPERTY (HTML FORM)
 # -------------------------------------------------
 
-@property_bp.route("/compare/view", methods=["GET"])
+@property_bp.route("/compare", methods=["GET"])
 def compare_properties_page():
     ids = request.args.get("ids")
 
@@ -464,16 +502,42 @@ def favorites_page():
     if "user_id" not in session:
         return redirect("/login")
 
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    city = request.args.get("city")
+    min_price = request.args.get("min_price")
+    max_price = request.args.get("max_price")
+    bhk = request.args.get("bhk")
+    property_type = request.args.get("property_type")
 
-    cursor.execute("""
-        SELECT p.id, p.title, p.price, p.city, p.locality
+    query = """
+        SELECT p.id, p.title, p.price, p.bhk,
+               p.property_type, p.city, p.locality
         FROM favorites f
         JOIN properties p ON f.property_id = p.id
         WHERE f.user_id = %s
-    """, (session["user_id"],))
+    """
+    params = [session["user_id"]]
 
+    if city:
+        query += " AND p.city=%s"
+        params.append(city)
+    if property_type:
+        query += " AND p.property_type=%s"
+        params.append(property_type)
+    if bhk:
+        query += " AND p.bhk=%s"
+        params.append(bhk)
+    if min_price:
+        query += " AND p.price >= %s"
+        params.append(min_price)
+    if max_price:
+        query += " AND p.price <= %s"
+        params.append(max_price)
+
+    query += " ORDER BY p.created_at DESC"
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(query, tuple(params))
     favorites = cursor.fetchall()
 
     cursor.close()
@@ -534,3 +598,53 @@ def remove_favorite(property_id):
     conn.close()
 
     return redirect(f"/properties/{property_id}")
+
+# -------------------------------------------------
+# MY PROPERTIES (SELLER HTML)
+# -------------------------------------------------
+@property_bp.route("/mine", methods=["GET"])
+def my_properties_page():
+    if "user_id" not in session or session.get("role") != "seller":
+        return redirect("/dashboard")
+
+    city = request.args.get("city")
+    min_price = request.args.get("min_price")
+    max_price = request.args.get("max_price")
+    bhk = request.args.get("bhk")
+    property_type = request.args.get("property_type")
+
+    query = """
+        SELECT id, title, price, bhk,
+               property_type, city, locality
+        FROM properties
+        WHERE owner_id = %s
+    """
+    params = [session["user_id"]]
+
+    if city:
+        query += " AND city=%s"
+        params.append(city)
+    if property_type:
+        query += " AND property_type=%s"
+        params.append(property_type)
+    if bhk:
+        query += " AND bhk=%s"
+        params.append(bhk)
+    if min_price:
+        query += " AND price >= %s"
+        params.append(min_price)
+    if max_price:
+        query += " AND price <= %s"
+        params.append(max_price)
+
+    query += " ORDER BY created_at DESC"
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(query, tuple(params))
+    properties = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template("properties_mine.html", properties=properties)

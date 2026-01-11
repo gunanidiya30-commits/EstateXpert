@@ -1,0 +1,99 @@
+<form method="get" class="card shadow-sm border-0 p-4 mb-4">
+
+    <!-- FILTER TITLE -->
+    <div class="mb-3">
+        <h5 class="fw-semibold mb-1">Filter Properties</h5>
+        <p class="text-muted small mb-0">
+            Narrow down listings by location, type, configuration, and budget.
+        </p>
+    </div>
+
+    <!-- FILTER FIELDS -->
+    <div class="row g-3">
+
+        <div class="col-md-2">
+            <label class="form-label small fw-semibold">State</label>
+            <input
+                type="text"
+                name="state"
+                value="{{ request.args.get('state', '') }}"
+                class="form-control"
+                placeholder="e.g. Karnataka"
+            >
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label small fw-semibold">City</label>
+            <input
+                type="text"
+                name="city"
+                value="{{ request.args.get('city', '') }}"
+                class="form-control"
+                placeholder="e.g. Bengaluru"
+            >
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label small fw-semibold">Property Type</label>
+            <input
+                type="text"
+                name="property_type"
+                value="{{ request.args.get('property_type', '') }}"
+                class="form-control"
+                placeholder="Apartment, Villa"
+            >
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label small fw-semibold">BHK</label>
+            <input
+                type="number"
+                name="bhk"
+                value="{{ request.args.get('bhk', '') }}"
+                class="form-control"
+                placeholder="e.g. 2"
+                min="1"
+            >
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label small fw-semibold">Min Price</label>
+            <input
+                type="number"
+                name="min_price"
+                value="{{ request.args.get('min_price', '') }}"
+                class="form-control"
+                placeholder="Min"
+            >
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label small fw-semibold">Max Price</label>
+            <input
+                type="number"
+                name="max_price"
+                value="{{ request.args.get('max_price', '') }}"
+                class="form-control"
+                placeholder="Max"
+            >
+        </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="d-flex justify-content-end align-items-center gap-2 mt-4">
+        <a
+            href="{{ request.path }}"
+            class="btn btn-outline-secondary btn-sm"
+        >
+            Clear Filters
+        </a>
+        <button
+            type="submit"
+            class="btn btn-primary btn-sm"
+        >
+            Apply Filters
+        </button>
+    </div>
+
+</form>

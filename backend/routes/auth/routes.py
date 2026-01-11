@@ -71,7 +71,8 @@ def login():
         return jsonify({"error": "Invalid email or password"}), 401
 
     session['user_id'] = user['id']
-    session['role'] = user['role']
+    session['user_name'] = user['name']   
+    session['role'] = user['role']         
 
     return redirect("/dashboard")
 
