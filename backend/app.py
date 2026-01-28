@@ -3,6 +3,14 @@ from backend.routes.auth import auth_bp
 from backend.routes.pages import pages_bp
 from backend.routes.property.routes import property_bp
 from backend.routes.dashboard import dashboard_bp
+from backend.routes.locality_analytics import locality_analytics_bp
+from backend.routes.maps import maps_bp
+from backend.routes.localities import localities_bp
+from backend.routes.locality_facilities import locality_facilities_bp
+from backend.routes.locality_profile import locality_profile_bp
+
+
+
 
 def create_app():
     app = Flask(__name__)
@@ -14,7 +22,13 @@ def create_app():
     app.register_blueprint(pages_bp)
     app.register_blueprint(property_bp)
     app.register_blueprint(dashboard_bp)
+    app.register_blueprint(locality_analytics_bp)
+    app.register_blueprint(maps_bp)
+    app.register_blueprint(localities_bp)
+    app.register_blueprint(locality_facilities_bp)
+    app.register_blueprint(locality_profile_bp)
 
+    
     @app.route('/')
     def home():
         return render_template('home.html')

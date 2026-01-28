@@ -301,7 +301,7 @@ def property_detail(property_id):
     # Fetch property images
     cursor.execute(
         """
-        SELECT image_path
+        SELECT image_url
         FROM property_images
         WHERE property_id = %s
         ORDER BY id ASC
@@ -310,7 +310,7 @@ def property_detail(property_id):
     )
     images = cursor.fetchall()
 
-    # ✅ FAVORITE STATE CHECK (ADDED)
+    # Favorite state
     is_favorite = False
     if "user_id" in session:
         cursor.execute(
@@ -322,6 +322,52 @@ def property_detail(property_id):
         )
         is_favorite = cursor.fetchone() is not None
 
+    # -------------------------------------------------
+    # MODULE 3 — LOCALITY SNAPSHOT (SCHEMA SAFE)
+    # -------------------------------------------------
+    locality = None
+
+    if property.get("locality_id"):
+        # Fetch locality
+        cursor.execute(
+            """
+            SELECT id, name, lqi
+            FROM localities
+            WHERE id = %s
+            """,
+            (property["locality_id"],)
+        )
+        loc = cursor.fetchone()
+
+        if loc:
+            # Facility count
+            cursor.execute(
+                """
+                SELECT COUNT(*) AS cnt
+                FROM facilities
+                WHERE locality_id = %s
+                """,
+                (loc["id"],)
+            )
+            facility_count = cursor.fetchone()["cnt"]
+
+            # LQI label (derived, NOT stored)
+            lqi = loc["lqi"] or 0
+            if lqi >= 75:
+                label = "Excellent"
+            elif lqi >= 50:
+                label = "Average"
+            else:
+                label = "Poor"
+
+            locality = {
+                "id": loc["id"],
+                "name": loc["name"],
+                "lqi_score": float(lqi),
+                "lqi_label": label,
+                "facility_count": facility_count
+            }
+
     cursor.close()
     conn.close()
 
@@ -329,8 +375,10 @@ def property_detail(property_id):
         "property_detail.html",
         property=property,
         images=images,
-        is_favorite=is_favorite
+        is_favorite=is_favorite,
+        locality=locality
     )
+
 
 # -------------------------------------------------
 # CREATE PAGE (HTML)

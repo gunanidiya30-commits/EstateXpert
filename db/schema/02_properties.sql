@@ -25,3 +25,16 @@ CREATE TABLE properties (
         REFERENCES users(id)
         ON DELETE CASCADE
 );
+
+ALTER TABLE properties
+ADD COLUMN state VARCHAR(100) NOT NULL
+AFTER property_type;
+
+ALTER TABLE properties
+ADD COLUMN locality_id INT NULL AFTER city;
+
+UPDATE properties p
+JOIN localities l
+  ON p.city = l.city
+SET p.locality_id = l.id;
+

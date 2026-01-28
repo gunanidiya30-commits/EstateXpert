@@ -17,3 +17,9 @@ def register_page():
 def contact():
     return render_template("contact.html")
 
+@pages_bp.route('/locality/<int:locality_id>')
+def locality_profile_page(locality_id):
+    return render_template(
+        'locality_profile.html',
+        locality_id=locality_id
+    )

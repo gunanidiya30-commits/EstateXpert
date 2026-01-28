@@ -15,12 +15,21 @@ DELETE FROM properties;
 -- USER 
 DELETE FROM users;
 
+--localities
+DELETE FROM localities;
+
+-- FACILITIES 
+DELETE FROM facilities;
+
+
 -- OPTIONAL: reset auto-increment counters (MySQL)
 -- Uncomment ONLY if you want clean IDs (safe)
 ALTER TABLE favorites AUTO_INCREMENT = 1;
 ALTER TABLE property_images AUTO_INCREMENT = 1;
 ALTER TABLE properties AUTO_INCREMENT = 1;
 ALTER TABLE users AUTO_INCREMENT = 1;
+ALTER TABLE localities AUTO_INCREMENT = 1;
+ALTER TABLE facilities AUTO_INCREMENT = 1;
 
 
 

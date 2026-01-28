@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EstateXpert | Locality Intelligence</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<!-- Header -->
+<nav class="navbar navbar-light bg-white shadow-sm px-4">
+    <span class="navbar-brand mb-0 h1 fw-bold">EstateXpert</span>
+</nav>
+
+<!-- HERO / TOP ACTION BAR (MATCHES MODULE 2) -->
+<section class="bg-dark text-light py-5">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+            <h5 class="fw-semibold mb-1">Locality Intelligence</h5>
+            <p class="text-light mb-0">
+                Understand livability, infrastructure, and access before choosing a property.
+            </p>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="/dashboard" class="btn btn-outline-light">
+                ← Dashboard
+            </a>
+
+            <a href="/properties/browse" class="btn btn-outline-light">
+                Browse Properties
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Locality Profile -->
+<section class="container my-5">
+
+    <h2 class="fw-bold mb-1" id="loc-name">Locality Overview</h2>
+    <p class="text-muted mb-4" id="data-freshness"></p>
+
+    <!-- LIVABILITY SCORE -->
+    <div class="card shadow-sm border-0 p-4 mb-4">
+        <h5 class="fw-semibold mb-2">Livability Score</h5>
+
+        <p class="mb-1">
+            <strong id="lqi-label"></strong>
+            (<span id="lqi-score"></span>/100)
+        </p>
+
+        <p class="text-muted mb-0" id="lqi-explanation"></p>
+    </div>
+
+    <!-- FACILITIES SUMMARY -->
+    <div class="card shadow-sm border-0 p-4 mb-4">
+        <h5 class="fw-semibold mb-3">Facilities Summary</h5>
+
+        <ul class="mb-0">
+            <li>🏫 Schools: <span id="school-info"></span></li>
+            <li>🏥 Hospitals: <span id="hospital-info"></span></li>
+            <li>🚇 Metro Access: <span id="metro-info"></span></li>
+        </ul>
+    </div>
+
+    <!-- VIEW TOGGLE -->
+    <div class="d-flex gap-2">
+        <a href="/maps/localities?focus={{ locality_id }}" class="btn btn-outline-secondary">
+            Map View
+        </a>
+    </div>
+
+</section>
+
+<!-- Footer -->
+<footer class="text-center py-4 text-muted border-top">
+    © 2026 EstateXpert ·
+    <a href="/contact" class="text-decoration-none">Contact</a>
+</footer>
+
+<script>
+fetch(`/api/locality/{{ locality_id }}`)
+  .then(res => {
+    if (!res.ok) throw new Error();
+    return res.json();
+  })
+  .then(data => {
+    document.getElementById('loc-name').innerText = data.name;
+    document.getElementById('data-freshness').innerText =
+        `Last updated: ${data.data_freshness.last_updated}`;
+
+    document.getElementById('lqi-label').innerText = data.lqi.label;
+    document.getElementById('lqi-score').innerText = data.lqi.score;
+    document.getElementById('lqi-explanation').innerText = data.lqi.explanation;
+
+    const f = data.facilities;
+
+    document.getElementById('school-info').innerText =
+        `${f.school.count} (nearest: ${f.school.nearest_km ?? 'N/A'} km)`;
+
+    document.getElementById('hospital-info').innerText =
+        `${f.hospital.count} (nearest: ${f.hospital.nearest_km ?? 'N/A'} km)`;
+
+    document.getElementById('metro-info').innerText =
+        `${f.metro.count} (nearest: ${f.metro.nearest_km ?? 'N/A'} km)`;
+  })
+  .catch(() => {
+    document.querySelector('section.container').innerHTML = `
+      <div class="alert alert-warning">
+        Locality intelligence is temporarily unavailable.
+        Please try again later.
+      </div>
+    `;
+  });
+</script>
+
+</body>
+</html>

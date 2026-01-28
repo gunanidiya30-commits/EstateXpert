@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Locality Intelligence Map | EstateXpert</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Leaflet -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <style>
+        #map {
+            height: 600px;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+<!-- HERO (MATCHES MODULE 2 / PROPERTY PAGE) -->
+<section class="bg-dark text-light py-5">
+    <div class="container">
+        <h1 class="fw-bold mb-2">📍 Locality Intelligence Map</h1>
+        <p class="mb-0 text-light">
+            Visual comparison of locality livability, facilities, and access.
+        </p>
+    </div>
+</section>
+
+<div class="container my-5">
+
+    <!-- TOP ACTION BAR -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+            <h4 class="fw-semibold mb-1">Explore Localities</h4>
+            <p class="text-muted mb-0">
+                Switch between text intelligence and geographic view.
+            </p>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="/dashboard" class="btn btn-outline-secondary">
+                ← Dashboard
+            </a>
+
+            <a href="/properties/browse" class="btn btn-outline-secondary">
+                Browse Properties
+            </a>
+
+            <a href="javascript:history.back()" class="btn btn-outline-primary">
+                ← Back
+            </a>
+        </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="mb-3">
+        <label class="me-3">
+            <input type="checkbox" checked id="filter-high"> ≥ 80
+        </label>
+        <label class="me-3">
+            <input type="checkbox" checked id="filter-mid"> 60–79
+        </label>
+        <label>
+            <input type="checkbox" checked id="filter-low"> &lt; 60
+        </label>
+    </div>
+
+    <!-- LEGEND -->
+    <div class="mb-2">
+        <strong>Legend:</strong>
+        <span class="ms-3 text-success">●</span> Excellent (≥80)
+        <span class="ms-3 text-warning">●</span> Good (60–79)
+        <span class="ms-3 text-danger">●</span> Average (&lt;60)
+    </div>
+
+    <!-- MAP -->
+    <div id="map" class="mt-3 rounded shadow-sm"></div>
+</div>
+
+<!-- FOOTER (MATCHES MODULE 2) -->
+<footer class="text-center py-4 text-muted border-top">
+    © 2026 EstateXpert ·
+    <a href="/contact" class="text-decoration-none">Contact</a>
+</footer>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    const map = L.map('map').setView([12.9716, 77.5946], 11);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const focusLocalityId = urlParams.get('focus');
+
+    function getColor(lqi) {
+        if (lqi >= 80) return 'green';
+        if (lqi >= 60) return 'orange';
+        return 'red';
+    }
+
+    let markers = [];
+
+    fetch('/api/localities')
+        .then(res => res.json())
+        .then(localities => {
+            localities.forEach(loc => {
+                if (!loc.latitude || !loc.longitude) return;
+
+                const color = getColor(loc.lqi);
+                const d = loc.distances || {};
+
+                const marker = L.circleMarker(
+                    [loc.latitude, loc.longitude],
+                    {
+                        radius: 8,
+                        color: color,
+                        fillColor: color,
+                        fillOpacity: 0.8
+                    }
+                ).addTo(map);
+
+                marker.bindPopup(
+                    `<b>${loc.name}</b><br>
+                     LQI Score: <b>${loc.lqi}</b><br><br>
+                     🏫 School: ${d.school ?? 'N/A'} km<br>
+                     🏥 Hospital: ${d.hospital ?? 'N/A'} km<br>
+                     🚇 Metro: ${d.metro ?? 'N/A'} km`
+                );
+
+                if (focusLocalityId && loc.id == focusLocalityId) {
+                    marker.openPopup();
+                    map.setView([loc.latitude, loc.longitude], 14);
+                }
+
+                markers.push({ lqi: loc.lqi, marker });
+            });
+        });
+
+    function applyFilters() {
+        const showHigh = document.getElementById('filter-high').checked;
+        const showMid = document.getElementById('filter-mid').checked;
+        const showLow = document.getElementById('filter-low').checked;
+
+        markers.forEach(obj => {
+            const lqi = obj.lqi;
+            const visible =
+                (lqi >= 80 && showHigh) ||
+                (lqi >= 60 && lqi < 80 && showMid) ||
+                (lqi < 60 && showLow);
+
+            if (visible) {
+                obj.marker.addTo(map);
+            } else {
+                map.removeLayer(obj.marker);
+            }
+        });
+    }
+
+    document
+        .querySelectorAll('input[type=checkbox]')
+        .forEach(cb => cb.addEventListener('change', applyFilters));
+</script>
+
+</body>
+</html>

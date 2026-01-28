@@ -132,6 +132,55 @@
                 </div>
             </div>
 
+            <!-- LOCALITY INTELLIGENCE SNAPSHOT -->
+{% if locality %}
+<div class="card shadow-sm border-0 mt-4">
+    <div class="card-body">
+        <h5 class="fw-semibold mb-2">
+            📍 Locality Intelligence
+        </h5>
+
+        <p class="mb-2">
+            <strong>{{ locality.name }}</strong>
+        </p>
+
+        <p class="mb-2">
+            <span class="badge
+                {% if locality.lqi_score >= 75 %}
+                    bg-success
+                {% elif locality.lqi_score >= 50 %}
+                    bg-warning text-dark
+                {% else %}
+                    bg-danger
+                {% endif %}
+            ">
+                LQI {{ locality.lqi_score }} · {{ locality.lqi_label }}
+            </span>
+        </p>
+
+        <p class="text-muted small mb-2">
+            {{ locality.facility_count }} nearby facilities contributing
+            to overall livability.
+        </p>
+
+        <a
+            href="/locality/{{ locality.id }}"
+            class="btn btn-sm btn-outline-primary"
+        >
+            View Full Locality Profile →
+        </a>
+    </div>
+</div>
+{% else %}
+<div class="card shadow-sm border-0 mt-4">
+    <div class="card-body">
+        <p class="text-muted mb-0">
+            Locality intelligence not available for this property.
+        </p>
+    </div>
+</div>
+{% endif %}
+
             <!-- CONTACT OWNER -->
             <div class="card shadow-sm border-0">
                 <div class="card-body">

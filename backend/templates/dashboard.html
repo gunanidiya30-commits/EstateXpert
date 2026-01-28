@@ -57,6 +57,7 @@
     <!-- BUYER / INVESTOR -->
     {% if user_role in ['buyer', 'investor'] %}
     <div class="row g-4 mb-5">
+
         <div class="col-md-4">
             <div class="card h-100 shadow-sm p-4">
                 <h5 class="fw-semibold">🔍 Browse Properties</h5>
@@ -95,12 +96,28 @@
                 </a>
             </div>
         </div>
+
+        <!-- MODULE 3 ADDITION -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm p-4">
+                <h5 class="fw-semibold">🌍 Explore Locality Intelligence</h5>
+                <p class="text-muted">
+                    Analyze safety, facilities, lifestyle access, and overall livability
+                    before shortlisting properties.
+                </p>
+                <a href="/localities" class="btn btn-outline-primary mt-auto">
+                    Explore Localities
+                </a>
+            </div>
+        </div>
+
     </div>
     {% endif %}
 
     <!-- SELLER -->
     {% if user_role == 'seller' %}
     <div class="row g-4 mb-5">
+
         <div class="col-md-6">
             <div class="card h-100 shadow-sm p-4">
                 <h5 class="fw-semibold">🏗️ Add New Property</h5>
@@ -127,12 +144,28 @@
                 </a>
             </div>
         </div>
+
+        <!-- MODULE 3 ADDITION -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm p-4">
+                <h5 class="fw-semibold">📍 Understand Locality Performance</h5>
+                <p class="text-muted">
+                    View locality quality, infrastructure strength, and demand context
+                    around your property listings.
+                </p>
+                <a href="/localities" class="btn btn-outline-primary mt-auto">
+                    View Locality Insights
+                </a>
+            </div>
+        </div>
+
     </div>
     {% endif %}
 
     <!-- ADMIN -->
     {% if user_role == 'admin' %}
     <div class="row g-4 mb-5">
+
         <div class="col-md-6">
             <div class="card h-100 shadow-sm p-4 border-warning">
                 <h5 class="fw-semibold">🏢 Platform Properties</h5>
@@ -158,6 +191,7 @@
                 </span>
             </div>
         </div>
+
     </div>
     {% endif %}
 </section>

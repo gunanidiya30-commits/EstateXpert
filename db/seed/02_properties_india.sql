@@ -1,4 +1,3 @@
-🏙️ City: New Delhi
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -50,7 +49,7 @@ INSERT INTO properties (
     2,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Dwarka
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -102,7 +101,7 @@ INSERT INTO properties (
     1,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Rohini
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -155,7 +154,7 @@ INSERT INTO properties (
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
 
-🏙️ City: Noida
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -207,7 +206,7 @@ INSERT INTO properties (
     2,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Ghaziabad
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -259,7 +258,7 @@ INSERT INTO properties (
     1,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Lucknow
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -312,7 +311,7 @@ INSERT INTO properties (
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
 
-🏙️ City: Chandigarh
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -364,7 +363,7 @@ INSERT INTO properties (
     2,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Ludhiana
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -416,7 +415,7 @@ INSERT INTO properties (
     1,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Amritsar
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -468,7 +467,7 @@ INSERT INTO properties (
     2,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Gurugram
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -520,7 +519,7 @@ INSERT INTO properties (
     2,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Faridabad
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -572,7 +571,7 @@ INSERT INTO properties (
     1,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Panipat
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -625,7 +624,7 @@ INSERT INTO properties (
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
 
-🏙️ City: Mumbai
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -677,7 +676,7 @@ INSERT INTO properties (
     1,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Pune
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -729,7 +728,7 @@ INSERT INTO properties (
     2,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Sangli
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -781,7 +780,7 @@ INSERT INTO properties (
     1,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Kolhapur
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -833,7 +832,7 @@ INSERT INTO properties (
     2,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Bengaluru
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -885,7 +884,7 @@ INSERT INTO properties (
     1,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Mysuru
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -937,7 +936,7 @@ INSERT INTO properties (
     2,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Mangaluru
+
 INSERT INTO properties (
     title, description, price, property_type, state, city, locality, area_sqft, bhk, owner_id
 ) VALUES
@@ -989,7 +988,7 @@ INSERT INTO properties (
     1,
     (SELECT id FROM users WHERE email = 'kunal.patel@gmail.com')
 );
-🏙️ City: Bangalore
+
 INSERT INTO properties (
     title,
     description,
